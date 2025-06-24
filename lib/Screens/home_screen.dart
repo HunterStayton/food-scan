@@ -1,40 +1,31 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:food_scan/Screens/profile_screen.dart';
+import 'package:food_scan/Screens/qr_screen.dart';
 import 'package:food_scan/Widgets/expandable_fab.dart';
 import 'add_food_screen.dart';
 import 'dashboard_screen.dart';
 import 'history_screen.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
+  final List<Widget> _screens = [DashboardScreen(), AddFoodScreen(), HistoryScreen(), ProfileScreen(), QRScreen()];
 
-  final List<Widget> _screens = [
-    DashboardScreen(),
-    AddFoodScreen(),
-    HistoryScreen(),
-    ProfileScreen(),
-  ];
-
-  final List<String> _screenTitles = [
-    'Dashboard',
-    'Add Food',
-    'History',
-    'Profile',
-  ];
+  final List<String> _screenTitles = ['Dashboard', 'Add Food', 'History', 'Profile'];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_screenTitles[_selectedIndex]),
-        backgroundColor: Colors.green,
-        elevation: 2,
-      ),
+      appBar: AppBar(title: Text(_screenTitles[_selectedIndex]), backgroundColor: Colors.green, elevation: 2),
       drawer: Drawer(
         child: Column(
           children: [
@@ -62,29 +53,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: CircleAvatar(
                         radius: 30,
                         backgroundColor: Colors.white,
-                        child: Icon(
-                          Icons.person,
-                          size: 40,
-                          color: Colors.green.shade700,
-                        ),
+                        child: Icon(Icons.person, size: 40, color: Colors.green.shade700),
                       ),
                     ),
                     SizedBox(height: 10),
                     Text(
                       'Calorie Tracker',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    Text(
-                      'Stay healthy!',
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 14,
-                      ),
-                    ),
+                    Text('Stay healthy!', style: TextStyle(color: Colors.white70, fontSize: 14)),
                   ],
                 ),
               ),
@@ -94,21 +71,9 @@ class _HomeScreenState extends State<HomeScreen> {
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: [
-                  _buildDrawerItem(
-                    icon: Icons.dashboard,
-                    title: 'Dashboard',
-                    index: 0,
-                  ),
-                  _buildDrawerItem(
-                    icon: Icons.add_circle,
-                    title: 'Add Food',
-                    index: 1,
-                  ),
-                  _buildDrawerItem(
-                    icon: Icons.history,
-                    title: 'History',
-                    index: 2,
-                  ),
+                  _buildDrawerItem(icon: Icons.dashboard, title: 'Dashboard', index: 0),
+                  _buildDrawerItem(icon: Icons.add_circle, title: 'Add Food', index: 1),
+                  _buildDrawerItem(icon: Icons.history, title: 'History', index: 2),
                   Divider(),
                   ListTile(
                     leading: Icon(Icons.settings, color: Colors.grey.shade600),
@@ -116,9 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: () {
                       Navigator.pop(context);
                       // TODO: Navigate to settings screen
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Settings coming soon!')),
-                      );
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Settings coming soon!')));
                     },
                   ),
                   ListTile(
@@ -137,64 +100,49 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: EdgeInsets.all(16),
               child: Text(
                 'Version 1.0.0',
-                style: TextStyle(
-                  color: Colors.grey.shade500,
-                  fontSize: 12,
-                ),
+                style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
                 textAlign: TextAlign.center,
               ),
             ),
           ],
         ),
       ),
-      body:
-      SafeArea(
-        child: _screens[_selectedIndex],
-      ),
-      floatingActionButton: _selectedIndex != 1
-          ? ExpandableFab(
-        onManualAdd: () {
-          setState(() {
-            _selectedIndex = 1;
-          });
-        },
-        onBarcodeScann: () {
-          _handleBarcodeScann();
-        },
-        onTextScan: () {
-          _handleTextScan();
-        },
-      )
-          : null,
+      body: SafeArea(child: _screens[_selectedIndex]),
+      floatingActionButton:
+          _selectedIndex != 1
+              ? ExpandableFab(
+                onManualAdd: () {
+                  setState(() {
+                    _selectedIndex = 1;
+                  });
+                },
+                onBarcodeScann: () {
+                  _handleBarcodeScann();
+                },
+                onTextScan: () {
+                  _handleTextScan();
+                },
+              )
+              : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
   void _handleBarcodeScann() {
-    // TODO: Implement barcode scanning functionality
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Barcode scanning coming soon!'),
-        backgroundColor: Colors.orange,
-      ),
-    );
+    setState(() {
+      _selectedIndex = 4;
+    });
+    Navigator.pop(context);
   }
 
   void _handleTextScan() {
     // TODO: Implement text scanning functionality
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Text scanning coming soon!'),
-        backgroundColor: Colors.purple,
-      ),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('Text scanning coming soon!'), backgroundColor: Colors.purple));
   }
 
-  Widget _buildDrawerItem({
-    required IconData icon,
-    required String title,
-    required int index,
-  }) {
+  Widget _buildDrawerItem({required IconData icon, required String title, required int index}) {
     final isSelected = _selectedIndex == index;
 
     return Container(
@@ -204,10 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
         color: isSelected ? Colors.green.shade50 : Colors.transparent,
       ),
       child: ListTile(
-        leading: Icon(
-          icon,
-          color: isSelected ? Colors.green.shade700 : Colors.grey.shade600,
-        ),
+        leading: Icon(icon, color: isSelected ? Colors.green.shade700 : Colors.grey.shade600),
         title: Text(
           title,
           style: TextStyle(
@@ -245,12 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Text('• Categorize meals'),
             ],
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text('OK'),
-            ),
-          ],
+          actions: [TextButton(onPressed: () => Navigator.of(context).pop(), child: Text('OK'))],
         );
       },
     );
