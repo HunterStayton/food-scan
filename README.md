@@ -1,17 +1,8 @@
 # food_scan
 
-A new Flutter project.
+Application that can scan barcodes/nutrition facts labels to aid in health/fitness tracking available on android/ios devices built with Flutter
 
-## Getting Started
+## What's Next?
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
+I would like to build this application to push to the app store and allow users to have a free way to track their health,
+as there is no reason for healthy habits to have a paywall behind them.
